@@ -11,13 +11,13 @@ version: '3.8'
 services:
   # Ktor Backend Server
   server:
-    # Use pre-built image from GitHub Container Registry
-    image: ghcr.io/${GITHUB_USERNAME:-delirium}/delerium-server:${SERVER_VERSION:-latest}
+    # Build locally since images haven't been published yet
+    build:
+      context: ../../delerium-server
+      dockerfile: Dockerfile
     
-    # For local builds during development, comment above and uncomment below:
-    # build:
-    #   context: ../../delerium-server
-    #   dockerfile: Dockerfile
+    # Once images are published to GHCR, you can use:
+    # image: ghcr.io/${GITHUB_USERNAME:-SnarkyB}/delerium-server:${SERVER_VERSION:-latest}
     
     container_name: delirium-server
     hostname: server
