@@ -69,8 +69,8 @@ services:
       - ../logs/nginx:/var/log/nginx
     
     ports:
-      # Keep standard development port
-      - "8080:80"
+      # Use port 8081 to avoid conflict with server on 8080
+      - "8081:80"
     
     restart: "no"
     
