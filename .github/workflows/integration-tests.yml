@@ -1,9 +1,10 @@
 # Infrastructure Integration Tests
 # File: delerium-infrastructure/.github/workflows/integration-tests.yml
-# Version: 1.0.0
+# Version: 2.0.0
 #
 # This workflow runs integration tests across all Delirium components.
 # It tests the full deployment stack with Docker Compose.
+# Updated: 2025-11-18 - Latest dependencies and Node.js 22
 
 name: Integration Tests
 
@@ -52,23 +53,30 @@ jobs:
             port: 80
     steps:
       - name: Checkout infrastructure repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           path: infrastructure
 
       - name: Checkout client repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           repository: ${{ github.repository_owner }}/delerium-client
           ref: ${{ github.event.inputs.client_version || 'main' }}
           path: delerium-client
 
       - name: Checkout server repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           repository: ${{ github.repository_owner }}/delerium-server
           ref: ${{ github.event.inputs.server_version || 'main' }}
           path: delerium-server
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: delerium-client/package-lock.json
 
       - name: Setup environment
         working-directory: infrastructure
@@ -182,7 +190,7 @@ jobs:
 
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.5.0
         with:
           name: integration-logs-${{ matrix.config.name }}
           path: infrastructure/integration-logs.txt
@@ -190,7 +198,7 @@ jobs:
 
       - name: Upload E2E test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.5.0
         with:
           name: e2e-results-${{ matrix.config.name }}
           path: delerium-client/playwright-report/
@@ -212,18 +220,18 @@ jobs:
     needs: integration-test
     steps:
       - name: Checkout infrastructure repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           path: infrastructure
 
       - name: Checkout repositories
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           repository: ${{ github.repository_owner }}/delerium-client
           path: delerium-client
 
       - name: Checkout server repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           repository: ${{ github.repository_owner }}/delerium-server
           path: delerium-server
