@@ -75,13 +75,13 @@ clean:
 # Run all tests
 test:
 	@echo "🧪 Running test suite..."
-	cd delerium-client && npm test
+	cd ../delerium-client && npm test
 	@echo "✅ Tests completed"
 
 # Build TypeScript client
 build-client:
 	@echo "📦 Building TypeScript client..."
-	cd delerium-client && npm run build
+	cd ../delerium-client && npm run build
 	@echo "✅ Client built"
 
 # Health check
@@ -148,16 +148,16 @@ deploy-full:
 	@$(MAKE) clean
 	@echo ""
 	@echo "📦 Step 2/5: Building client and server in parallel..."
-	@(cd delerium-client && npm run build) & \
-	(cd delerium-server && ./gradlew clean build) & \
+	@(cd ../delerium-client && npm run build) & \
+	(cd ../delerium-server && ./gradlew clean build) & \
 	wait || exit 1
 	@echo ""
 	@echo "🧪 Step 3/5: Running tests in parallel..."
 	@echo "  → Client tests..."
-	@(cd delerium-client && npm test || (echo "⚠️  Client tests failed!" && exit 1)) & \
+	@(cd ../delerium-client && npm test || (echo "⚠️  Client tests failed!" && exit 1)) & \
 	CLIENT_PID=$$!; \
 	echo "  → Server tests..."
-	@(cd delerium-server && ./gradlew test || (echo "⚠️  Server tests failed!" && exit 1)) & \
+	@(cd ../delerium-server && ./gradlew test || (echo "⚠️  Server tests failed!" && exit 1)) & \
 	SERVER_PID=$$!; \
 	wait $$CLIENT_PID; \
 	CLIENT_EXIT=$$?; \

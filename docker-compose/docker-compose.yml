@@ -5,9 +5,6 @@
 # This is the base configuration for deploying Delirium with pre-built images.
 # For development, use docker-compose.dev.yml as an override.
 # For production, use docker-compose.prod.yml with SSL configuration.
-
-version: '1.0.0'
-
 services:
   # Ktor Backend Server
   server:
