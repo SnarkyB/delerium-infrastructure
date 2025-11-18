@@ -114,10 +114,6 @@ networks:
 volumes:
   server-data:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${DATA_DIR:-../data}/server
     labels:
       com.delirium.backup: "true"
       com.delirium.backup.frequency: "daily"
