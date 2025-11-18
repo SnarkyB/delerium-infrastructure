@@ -81,7 +81,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 
 ### Required
 
-- **Docker** 20.10+ ([Install Docker](https://docs.docker.com/get-docker/))
+- **Docker** 24.0+ with Buildx support ([Install Docker](https://docs.docker.com/get-docker/))
 - **Docker Compose** v2+ (included with Docker Desktop)
 - **Git** (for cloning repositories)
 
@@ -90,6 +90,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 - **curl** (for health checks)
 - **openssl** (for generating secrets)
 - **lsof** (for port conflict detection)
+- **QEMU** (for multi-architecture builds)
 
 ### Verify Prerequisites
 
