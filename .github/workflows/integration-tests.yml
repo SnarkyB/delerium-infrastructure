@@ -49,7 +49,7 @@ jobs:
         config:
           - name: "Development"
             compose_file: "docker-compose.yml:docker-compose.dev.yml"
-            port: 8080
+            port: 8081
           - name: "Production"
             compose_file: "docker-compose.yml:docker-compose.prod.yml"
             port: 80
@@ -115,9 +115,14 @@ jobs:
         working-directory: infrastructure
         env:
           WEB_PORT: ${{ matrix.config.name == 'Development' && '8081' || '80' }}
+          DELETION_TOKEN_PEPPER: ${{ env.DELETION_TOKEN_PEPPER }}
+          GITHUB_USERNAME: ${{ github.repository_owner }}
         run: |
           # Create additional directories if needed
           mkdir -p data/server data/nginx
+          
+          # Export WEB_PORT to .env file for docker compose
+          echo "WEB_PORT=${WEB_PORT}" >> .env
           
           # Start Docker Compose
           IFS=':' read -ra FILES <<< "${{ matrix.config.compose_file }}"
