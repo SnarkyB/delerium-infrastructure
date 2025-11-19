@@ -94,8 +94,14 @@ jobs:
           echo "DELETION_TOKEN_PEPPER=${PEPPER}" >> $GITHUB_ENV
           echo "GITHUB_USERNAME=${{ github.repository_owner }}" >> $GITHUB_ENV
           
-          # Create directories
+          # Create directories with proper permissions for non-root container user
           mkdir -p data logs
+          mkdir -p ../delerium-server/data
+          mkdir -p logs/server logs/nginx
+          
+          # Make data directories writable by container user (UID 999 for delirium user)
+          chmod 777 ../delerium-server/data
+          chmod 777 logs/server logs/nginx
 
       - name: Start services (${{ matrix.config.name }})
         working-directory: infrastructure
@@ -252,6 +258,10 @@ jobs:
           # Export for docker compose
           export DELETION_TOKEN_PEPPER="${PEPPER}"
           export CLIENT_DIST="../../delerium-client"
+          
+          # Create data directories with proper permissions
+          mkdir -p ../delerium-server/data
+          chmod 777 ../delerium-server/data
           
           docker compose -f docker-compose/docker-compose.yml up -d --build
           
