@@ -113,7 +113,12 @@ jobs:
 
       - name: Start services (${{ matrix.config.name }})
         working-directory: infrastructure
+        env:
+          WEB_PORT: ${{ matrix.config.name == 'Development' && '8081' || '80' }}
         run: |
+          # Create additional directories if needed
+          mkdir -p data/server data/nginx
+          
           # Start Docker Compose
           IFS=':' read -ra FILES <<< "${{ matrix.config.compose_file }}"
           COMPOSE_CMD="docker compose"
@@ -122,6 +127,7 @@ jobs:
           done
           
           echo "Starting: $COMPOSE_CMD"
+          echo "WEB_PORT is set to: $WEB_PORT"
           $COMPOSE_CMD up -d --build
 
       - name: Wait for services to be healthy
