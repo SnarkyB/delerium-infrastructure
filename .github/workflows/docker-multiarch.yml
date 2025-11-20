@@ -10,14 +10,11 @@
 name: Build Multi-Arch Docker Images
 
 on:
-  # Trigger on version tags
+  # Trigger on version tags and main branch pushes
   push:
     tags:
       - 'v*.*.*-*'
       - 'server-v*.*.*'
-  
-  # Trigger on main branch pushes
-  push:
     branches:
       - main
   
